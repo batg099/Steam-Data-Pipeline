@@ -2,7 +2,7 @@
 
 Every day, this project collects the 100 most played games on Steam, stores them in BigQuery, cleans them with dbt and shows them in a Looker Studio dashboard.
 
-![Steam market dashboard](docs/dashboard.PNG)
+![Steam market dashboard](dashboard.PNG)
 
 ## How it works
 
