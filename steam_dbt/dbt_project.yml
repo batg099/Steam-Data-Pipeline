@@ -1,0 +1,8 @@
+name: steam
+version: "1.0"
+profile: steam
+model-paths: ["models"]
+
+models:
+  steam:
+    +materialized: table

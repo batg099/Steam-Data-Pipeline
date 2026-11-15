@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: stg_top
+    columns:
+      - name: appid
+        tests: [not_null]
+      - name: rang
+        tests: [not_null]
+
+  - name: jeux_du_jour
+    columns:
+      - name: appid
+        tests: [unique, not_null]
+
+  - name: genres
+    columns:
+      - name: genre
+        tests: [unique, not_null]

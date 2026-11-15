@@ -1,0 +1,10 @@
+steam:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: steam-514714
+      dataset: steam
+      location: EU
+      threads: 1
