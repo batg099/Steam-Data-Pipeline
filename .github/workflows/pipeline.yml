@@ -1,0 +1,48 @@
+name: Daily pipeline
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v5
+
+      - name: Install Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install packages
+        run: pip install -r requirements.txt
+
+      - name: Collect the Steam top 100
+        run: python collect.py
+
+      - name: Save the new file in the repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data
+          git commit -m "Steam data $(date -u +%Y-%m-%d)" || echo "Nothing new"
+          git pull --rebase
+          git push
+
+      - name: Connect to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Load the files into BigQuery
+        run: python load.py
+
+      - name: Run dbt
+        working-directory: steam_dbt
+        run: dbt build --profiles-dir .
